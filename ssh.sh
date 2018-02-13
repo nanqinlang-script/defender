@@ -1,6 +1,7 @@
 # log file
 # centos: /var/log/secure
 # debian: /var/log/auth.log
+log_file=
 
 # your public ip
 public_ip=
@@ -9,7 +10,7 @@ public_ip=
 define=
 
 ban(){
-list=`cat /var/log/auth.log | grep "Failed" | awk '{print $(NF-3)}' | sort | uniq -c | awk '{print $2"="$1;}'`
+list=`cat ${log_file} | grep "Failed" | awk '{print $(NF-3)}' | sort | uniq -c | awk '{print $2"="$1;}'`
 
 if [[ ! -z ${list} ]]; then
 for i in ${list}
