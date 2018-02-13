@@ -3,7 +3,7 @@
 # debian: /var/log/auth.log
 
 # your public ip
-local_ip=
+public_ip=
 
 # define max tried logined times
 define=
@@ -16,7 +16,7 @@ for i in ${list}
 do
 	ip=`echo $i | awk -F= '{print $1}' | head -n 1`
 	times=`echo $i | awk -F= '{print $2}' | head -n 1`
-	if [[ "${ip}" != "${local_ip}" && "${times}" > "${define}" ]]; then
+	if [[ "${ip}" != "${public_ip}" && "${times}" > "${define}" ]]; then
 		# 检查重复
 		exist=`iptables -nL | grep ${ip}`
 		if [[ -z ${exist} ]]; then
