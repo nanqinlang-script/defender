@@ -1,13 +1,28 @@
 # log file
 # centos: /var/log/secure
 # debian: /var/log/auth.log
-log_file=
+log_file=auto
 
 # your public ip
 public_ip=
 
 # define max tried logined times
 define=
+
+if [ $log_file = "auto" ]; then
+	# RHEL-based distro
+	if [ -f '/var/log/secure' ]; then
+		echo "Log file found: /var/log/secure"
+		log_file=/var/log/secure
+	# Debian-based distro
+	elif [ -f '/var/log/auth.log' ]; then
+		echo "Log file found: /var/log/auth.log"
+		log_file=/var/log/auth.log
+	else
+		echo 'Unable to found log file. Please specify it manually in the script.'
+		exit 1
+	fi
+fi
 
 ban(){
 list=`cat ${log_file} | grep "Failed" | awk '{print $(NF-3)}' | sort | uniq -c | awk '{print $2"="$1;}'`
